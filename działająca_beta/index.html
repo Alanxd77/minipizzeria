@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Pizzerii</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>Menu Pizzerii</h1>
+        
+        <!-- Odnośnik do strony zarządzania zamówieniami -->
+        <a href="orders_management.php" class="admin-link">Zarządzanie Zamówieniami</a>
+    </header>
+
+    <section>
+        <h2>Pizze</h2>
+        <ul>
+            <li>
+                <strong>Margherita</strong> - 25 zł
+            </li>
+            <li>
+                <strong>Pepperoni</strong> - 30 zł
+            </li>
+            <li>
+                <strong>Hawajska</strong> - 28 zł
+            </li>
+            <!-- Dodaj więcej pozycji według potrzeb -->
+        </ul>
+    </section>
+
+    <section>
+        <h2>Zamówienie</h2>
+        <form action="process_order.php" method="POST">
+            <label for="name">Imię:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="address">Adres:</label>
+            <input type="text" id="address" name="address" required>
+
+            <label for="pizza">Wybierz pizzę:</label>
+            <select id="pizza" name="pizza" required>
+                <option value="Margherita">Margherita - 25 zł</option>
+                <option value="Pepperoni">Pepperoni - 30 zł</option>
+                <option value="Hawajska">Hawajska - 28 zł</option>
+                <!-- Dodaj więcej opcji według potrzeb -->
+            </select>
+
+            <label for="account">Stworzyć konto?</label>
+            <input type="checkbox" id="account" name="account">
+
+            <button type="submit">Złóż zamówienie</button>
+        </form>
+    </section>
+</body>
+
+</html>
