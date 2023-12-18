@@ -26,11 +26,11 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Tutaj dynamicznie generowane wiersze dla każdego zamówienia -->
-                <?php include 'config.php'; ?>
+                <?php include 'display_orders.php'; ?>
             </tbody>
         </table>
     </section>
 </body>
 
 </html>
+
