@@ -1,9 +1,7 @@
 <?php
 session_start();
 
-// Sprawdź, czy użytkownik jest zalogowany
 if (!isset($_SESSION['user_id'])) {
-    // Jeśli niezalogowany, przekieruj do strony logowania
     header("Location: login.php");
     exit();
 }
@@ -28,7 +26,6 @@ $result = $mysqli->query($query);
 <body>
     <header>
         <?php
-        // Wyświetl ID użytkownika i nazwę użytkownika, jeśli są dostępne
         echo '<span>ID: ' . $_SESSION['user_id'] . '</span>';
         echo '<span>Nazwa użytkownika: ' . $_SESSION['username'] . '</span>';
         echo '<a href="logout.php" class="account-link">Wyloguj się</a>';
@@ -48,11 +45,11 @@ $result = $mysqli->query($query);
                     <th>Adres</th>
                     <th>Pizza</th>
                     <th>Data Zamówienia</th>
+                    <th>Ocena</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                // Wyświetl historię zamówień
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>";
@@ -61,10 +58,23 @@ $result = $mysqli->query($query);
                         echo "<td>{$row['address']}</td>";
                         echo "<td>{$row['pizza']}</td>";
                         echo "<td>{$row['order_date']}</td>";
+                        echo "<td>";
+
+                        echo "<form action='submit_rating.php' method='post'>";
+                        echo "<input type='hidden' name='order_id' value='{$row['order_id']}'>";
+                        echo "<select name='rating'>";
+                        for ($i = 1; $i <= 5; $i++) {
+                            echo "<option value='$i'>$i</option>";
+                        }
+                        echo "</select>";
+                        echo "<input type='submit' value='Oceń'>";
+                        echo "</form>";
+
+                        echo "</td>";
                         echo "</tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='5'>Brak zamówień.</td></tr>";
+                    echo "<tr><td colspan='6'>Brak zamówień.</td></tr>";
                 }
                 ?>
             </tbody>

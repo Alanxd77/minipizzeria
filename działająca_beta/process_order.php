@@ -7,23 +7,18 @@ include 'config.php';
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 } else {
-    // Pobierz ID użytkownika "Guest" z bazy danych
-    $guestUserQuery = "SELECT user_id FROM users WHERE username = 'Guest'";
-    $guestUserResult = $mysqli->query($guestUserQuery);
+    // Utwórz sesję użytkownika "Guest" w przypadku braku zalogowania
+    $_SESSION['user_id'] = 'guest_' . uniqid(); // Tworzy unikalne ID dla użytkownika "Guest"
+    $user_id = $_SESSION['user_id'];
 
-    if ($guestUserResult->num_rows > 0) {
-        $guestUserData = $guestUserResult->fetch_assoc();
-        $user_id = $guestUserData['user_id'];
-    } else {
-        // Jeśli użytkownik "Guest" nie istnieje, utwórz go
-        $createGuestUserQuery = "INSERT INTO users (username, password) VALUES ('Guest', 'guest_password')";
-        if ($mysqli->query($createGuestUserQuery) === TRUE) {
-            // Pobierz ID użytkownika "Guest" z bazy danych
-            $guestUserResult = $mysqli->query($guestUserQuery);
-            $guestUserData = $guestUserResult->fetch_assoc();
-            $user_id = $guestUserData['user_id'];
-        } else {
-            echo "Błąd podczas tworzenia użytkownika 'Guest': " . $mysqli->error;
+    // Sprawdź, czy użytkownik to gość
+    $isGuest = strpos($user_id, 'guest_') === 0;
+
+    // Jeśli to gość, utwórz odpowiedni wpis w tabeli users, jeśli nie istnieje
+    if ($isGuest) {
+        $guestInsertQuery = "INSERT IGNORE INTO users (user_id) VALUES ('$user_id')";
+        if ($mysqli->query($guestInsertQuery) !== TRUE) {
+            echo "Błąd podczas tworzenia użytkownika gościa: " . $mysqli->error;
             exit();
         }
     }
@@ -35,15 +30,27 @@ $address = $mysqli->real_escape_string($_POST["address"]);
 $pizza = $mysqli->real_escape_string($_POST["pizza"]);
 $createAccount = isset($_POST["create_account"]) ? 1 : 0;
 
+// Sprawdź, czy istnieje już zamówienie o takich samych danych dla danego użytkownika
+$checkDuplicateQuery = "SELECT * FROM orders WHERE user_id = '$user_id' AND name = '$name' AND address = '$address' AND pizza = '$pizza'";
+$resultDuplicate = $mysqli->query($checkDuplicateQuery);
+
+if ($resultDuplicate->num_rows > 0) {
+    // Zamówienie już istnieje dla danego użytkownika, obsłuż to odpowiednio (np. wyświetl komunikat lub przekieruj użytkownika)
+    echo "To zamówienie już istnieje!";
+    exit();
+}
+
 // Ustaw zmienne sesji
 $_SESSION['name'] = $name;
 $_SESSION['address'] = $address;
 $_SESSION['pizza'] = $pizza;
 $_SESSION['createAccount'] = $createAccount;
-$_SESSION['user_id'] = $user_id;
 
 // Dodaj zamówienie do bazy danych
 $query = "INSERT INTO orders (user_id, name, address, pizza, create_account) VALUES ('$user_id', '$name', '$address', '$pizza', '$createAccount')";
+
+// Dodaj wydruk SQL przed wykonaniem zapytania
+echo "Zapytanie SQL: $query";
 
 if ($mysqli->query($query) === TRUE) {
     // Pomyślnie dodano zamówienie do bazy danych
@@ -51,6 +58,8 @@ if ($mysqli->query($query) === TRUE) {
     exit();
 } else {
     echo "Błąd podczas dodawania zamówienia do bazy danych: " . $mysqli->error;
+    // Dodaj dodatkowe informacje diagnostyczne, takie jak wartości zmiennych
+    echo "<br>user_id: $user_id, name: $name, address: $address, pizza: $pizza, createAccount: $createAccount";
     exit();
 }
 ?>
