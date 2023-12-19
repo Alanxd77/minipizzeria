@@ -1,6 +1,6 @@
 <?php
-// process_order.php
 session_start();
+
 include 'config.php';
 
 // Sprawdź, czy użytkownik jest zalogowany
@@ -29,16 +29,6 @@ $name = $mysqli->real_escape_string($_POST["name"]);
 $address = $mysqli->real_escape_string($_POST["address"]);
 $pizza = $mysqli->real_escape_string($_POST["pizza"]);
 $createAccount = isset($_POST["create_account"]) ? 1 : 0;
-
-// Sprawdź, czy istnieje już zamówienie o takich samych danych dla danego użytkownika
-$checkDuplicateQuery = "SELECT * FROM orders WHERE user_id = '$user_id' AND name = '$name' AND address = '$address' AND pizza = '$pizza'";
-$resultDuplicate = $mysqli->query($checkDuplicateQuery);
-
-if ($resultDuplicate->num_rows > 0) {
-    // Zamówienie już istnieje dla danego użytkownika, obsłuż to odpowiednio (np. wyświetl komunikat lub przekieruj użytkownika)
-    echo "To zamówienie już istnieje!";
-    exit();
-}
 
 // Ustaw zmienne sesji
 $_SESSION['name'] = $name;
