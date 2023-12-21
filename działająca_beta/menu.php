@@ -5,7 +5,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Pizzerii</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Resetowanie stylów */
+        body, h1, h2, p, ul, li, table {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Podstawowe style strony */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        header {
+            background-color: #ff6347;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        h1 {
+            font-size: 3em;
+        }
+
+        section {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h2 {
+            color: #ff6347;
+            font-size: 2em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #ff6347;
+            color: #fff;
+        }
+
+        /* Formularz logowania */
+        #login {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        input, select {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #ff6347;
+            color: #fff;
+            padding: 12px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #d14029;
+        }
+
+        /* Stopka */
+        footer {
+            text-align: center;
+            padding: 1em 0;
+            background-color: #333;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 
 <body>
@@ -31,7 +138,7 @@
         <h1>Menu Pizzerii</h1>
         
         <!-- Odnośnik do strony zarządzania zamówieniami -->
-        <a href="orders_management.php" class="admin-link">Zarządzanie Zamówieniami</a>
+        
     </header>
 
     <section>
@@ -90,11 +197,36 @@
                 ?>
             </select>
 
+            <label for="size">Wybierz rozmiar pizzy:</label>
+            <select id="size" name="size" required>
+                <option value="Mała">Mała</option>
+                <option value="Średnia">Średnia</option>
+                <option value="Duża">Duża</option>
+            </select>
+
+            <label for="sauce">Wybierz sos:</label>
+            <select id="sauce" name="sauce" required>
+                <option value="Czosnkowy">Czosnkowy</option>
+                <option value="Mieszany">Mieszany</option>
+                <option value="Pomidorowy">Pomidorowy</option>
+            </select>
+
+            <label for="crust">Wybierz rodzaj ciasta:</label>
+            <select id="crust" name="crust" required>
+                <option value="Klasyczne">Klasyczne</option>
+                <option value="Cienkie">Cienkie</option>
+                <option value="Grube">Grube</option>
+            </select>
+
+            <label for="delivery">Opcja dostawy MAX 15km:</label>
+            <select id="delivery" name="delivery" required>
+                <option value="Dostawa">Dostawa (+15 zł)</option>
+                <option value="Odbiór osobisty">Odbiór osobisty</option>
+            </select>
+
             <button type="submit">Złóż zamówienie</button>
         </form>
     </section>
 </body>
 
 </html>
-
-                
